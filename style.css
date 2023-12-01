@@ -1,0 +1,182 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  
+  background-color: #191919;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  min-height: 100vh;
+  padding-bottom: 500px;
+}
+.work,.header{
+  display: flex;
+  min-height: 15vh;
+  align-items: center;
+  justify-content: center;
+   
+
+}
+select{
+  
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  border: none;
+}
+.select{
+margin: 1rem;
+position: relative;
+overflow: hidden;
+}
+select{
+  color: #ee9c86;
+  width: 10rem;
+  cursor: pointer;
+  padding: 1.2rem;
+}
+.select::after{
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color:#ff6f47;
+  padding: 1.2rem;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+.select:hover::after{
+  background-color: white;
+  color: #ff6f47;
+}
+
+input{
+  border-radius: 6px 0 0 6px;
+  
+}
+::placeholder{
+  color: #19191940;
+}
+input,.add{
+ 
+  padding: 0.8rem;
+  font-size: 1.5rem;
+  border: none;
+  background-color: white;
+  outline: none;
+  
+ 
+}
+
+.header{
+  font-size: 3rem;
+  color: white;
+}
+.add{
+color: #3D000A;
+background-color: white;
+cursor: pointer;
+transition: all 0.3 ease;
+border-radius: 0px 4px 4px 0px;
+}
+.add:hover{
+  background-color: #3D000A;
+  color: white;
+}
+.todos{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.todo-list{
+  min-width: 30%;
+  list-style: none;
+}
+
+
+
+.todo{
+  margin: 0.5rem;
+  background-color: white;
+  color: black;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.5s ease;
+  border-radius: 6px 6px 6px 6px;
+}
+
+.todo li{
+  flex: 1;
+}
+
+.delet{
+  border-radius: 4px 4px 4px 4px;
+}
+
+.delet{
+background: #A6341B;
+color: white;
+border: none;
+padding: 1rem;
+font-size: 1rem;
+cursor: pointer;
+margin: 1rem;
+
+}
+
+.todoitem{
+  padding: 0rem 0.2rem;
+  
+}
+.td:last-child{
+  border: none;
+}
+.td{
+  
+  border-right: 1px solid gainsboro;
+ padding: 0.5rem;
+  
+}
+.fa-sharp ,.fa-check{
+  pointer-events:none;
+}
+
+.completed{
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+.fall{
+  transform: translatey(8rem);
+  opacity: 0;
+}
+
+@media (max-width: 600px){
+  .td{
+    font-size: 10px;
+  }
+}
+
+.err{
+  position: absolute;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #A6341B;
+  transform: translateY(38px);
+}
+.loading{
+  position: absolute;
+  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(40px);
+  color: #f4fcff;
+}
