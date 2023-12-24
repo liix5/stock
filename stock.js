@@ -31,6 +31,7 @@ let addStock = ()=>{
 //* handel errors before fetching
   if (Number(input.value) > 9999) {
     error.innerText= 'the input should be four digits. ex.2222'
+   
   } else if(input.value.indexOf(' ') >= 0){
     error.innerText='Invalid stock symbol: Whitespace is not allowed.'
   }
@@ -72,7 +73,7 @@ let addStock = ()=>{
   }
   
   
-  
+ 
   fetch(url2, options2)
    .then(final => final.json())
    .then(result =>{
@@ -92,14 +93,16 @@ let addStock = ()=>{
   
     process()
     error.innerText=' '
+    
    })
    
    })
    .catch(err => {
+    error.classList='err'
     const errormessage =String(err)  
     if(errormessage.includes('Unexpected token')){
     error.innerText= 'Stock symbol not found: Please verify and re-enter. '
-  
+    console.log(error.classList)
    }else if (key == '34eca5a551mshdefdb670ce0b05ep18976bjsn526ca61a1c20') {
     key = '6058d93136msh8c7ce63d86695bap17234cjsn3260034dfb5a'
     error.innerText= ' sorry, try again'

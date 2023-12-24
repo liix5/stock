@@ -96,6 +96,7 @@ border-radius: 0px 4px 4px 0px;
 .stock-list{
   min-width: 30%;
   list-style: none;
+  padding-top: 24px;
 }
 
 
@@ -170,7 +171,9 @@ margin: 1rem;
   justify-content: center;
   align-items: center;
   color: #A6341B;
-  transform: translateY(38px);
+  transform: translateY(50px);
+  text-align: center;
+  
 }
 .loading{
   position: absolute;
