@@ -60,6 +60,7 @@ input{
 }
 ::placeholder{
   color: #19191940;
+  font-size: 20px;
 }
 input,.add{
  
@@ -87,19 +88,19 @@ border-radius: 0px 4px 4px 0px;
   background-color: #3D000A;
   color: white;
 }
-.todos{
+.stocks{
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.todo-list{
+.stock-list{
   min-width: 30%;
   list-style: none;
 }
 
 
 
-.todo{
+.stock{
   margin: 0.5rem;
   background-color: white;
   color: black;
@@ -111,7 +112,7 @@ border-radius: 0px 4px 4px 0px;
   border-radius: 6px 6px 6px 6px;
 }
 
-.todo li{
+.stock li{
   flex: 1;
 }
 
@@ -130,7 +131,7 @@ margin: 1rem;
 
 }
 
-.todoitem{
+.stockitem{
   padding: 0rem 0.2rem;
   
 }
@@ -139,7 +140,7 @@ margin: 1rem;
 }
 .td{
   
-  border-right: 1px solid gainsboro;
+ border-right: 1px solid gainsboro;
  padding: 0.5rem;
   
 }

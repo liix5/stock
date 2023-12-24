@@ -1,7 +1,7 @@
 //selectors
 let input =document.querySelector('input')
 let addbtn =document.querySelector('.add')
-let todos =document.querySelector('.todo-list')
+let stocks =document.querySelector('.stock-list')
 let error =document.querySelector('.err')
 
 
@@ -21,18 +21,23 @@ let q4;
 let q4name;
 
 
-
-//'6058d93136msh8c7ce63d86695bap17234cjsn3260034dfb5a'
-//'34eca5a551mshdefdb670ce0b05ep18976bjsn526ca61a1c20'
+// * i know the keys are exposed
+//* but consedring its only a simple front end app with no private info i didnt make a backend 
 
 let key = '34eca5a551mshdefdb670ce0b05ep18976bjsn526ca61a1c20'
 
 
-let addtodo = ()=>{
-
+let addStock = ()=>{
+//* handel errors before fetching
   if (Number(input.value) > 9999) {
     error.innerText= 'the input should be four digits. ex.2222'
-  }else{
+  } else if(input.value.indexOf(' ') >= 0){
+    error.innerText='Invalid stock symbol: Whitespace is not allowed.'
+  }
+  else if(input.value.match(/[a-z]/g) ||input.value.match( /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) {
+    error.innerText='Please use only numbers for the stock symbol ex.2222 '
+  }
+  else{
 
 
   const url= `https://yahoo-finance127.p.rapidapi.com/price/${input.value}.SR`;
@@ -52,8 +57,8 @@ let addtodo = ()=>{
     symbol = input.value
     comp = data.shortName
     price = data.regularMarketPrice.fmt
-    console.log(price)
-  
+    
+    
     
     
   
@@ -71,36 +76,37 @@ let addtodo = ()=>{
   fetch(url2, options2)
    .then(final => final.json())
    .then(result =>{
-    q1name = result.earningsChart.quarterly[0].date;
-    q1 = result.earningsChart.quarterly[0].actual.fmt;
+    q1name = result.earningsChart.quarterly[0]?.date;
+    q1 = result.earningsChart.quarterly[0]?.actual.fmt;
     
   
-    q2name = result.earningsChart.quarterly[1].date;
-    q2 = result.earningsChart.quarterly[1].actual.fmt;
+    q2name = result.earningsChart.quarterly[1]?.date;
+    q2 = result.earningsChart.quarterly[1]?.actual.fmt;
     
-    q3name = result.earningsChart.quarterly[2].date;
-    q3 = result.earningsChart.quarterly[2].actual.fmt;
+    q3name = result.earningsChart.quarterly[2]?.date;
+    q3 = result.earningsChart.quarterly[2]?.actual.fmt;
   
-    q4name = result.earningsChart.quarterly[3].date;
-    q4 = result.earningsChart.quarterly[3].actual.fmt;
-    console.log(q4name)
+    q4name = result.earningsChart.quarterly[3]?.date;
+    q4 = result.earningsChart.quarterly[3]?.actual.fmt;
+    
   
     process()
     error.innerText=' '
-    error.classList='err'
-   
    })
    
    })
-   .catch(err => {if (key == '34eca5a551mshdefdb670ce0b05ep18976bjsn526ca61a1c20') {
+   .catch(err => {
+    const errormessage =String(err)  
+    if(errormessage.includes('Unexpected token')){
+    error.innerText= 'Stock symbol not found: Please verify and re-enter. '
+  
+   }else if (key == '34eca5a551mshdefdb670ce0b05ep18976bjsn526ca61a1c20') {
     key = '6058d93136msh8c7ce63d86695bap17234cjsn3260034dfb5a'
     error.innerText= ' sorry, try again'
-    console.log('sorry')
-   } else{
+   } else if (key == '6058d93136msh8c7ce63d86695bap17234cjsn3260034dfb5a'){
     key = '34eca5a551mshdefdb670ce0b05ep18976bjsn526ca61a1c20'
     error.innerText= ' sorry, try again'
-    console.log('sorry')
-   }
+   } 
   
   })
   }
@@ -109,15 +115,15 @@ let addtodo = ()=>{
 
  let process = ()=>{
   error.innerText=''
-  let array = [`${symbol}-${comp}`,` ${q1name} = ${q1}`,` ${q2name} = ${q2}`,` ${q3name} = ${q3}`,` ${q4name} = ${q4}`, `price = ${price}`]
+  let array = [`${symbol}-${comp}`,` ${q1name === undefined? 'not found': q1name} = ${q1=== undefined? 'not found': q1}`,` ${q2name === undefined? 'not found': q2name} = ${q2 === undefined? 'not found': q2}`,` ${q3name === undefined? 'not found': q3name} = ${q3 === undefined? 'not found': q3}`,` ${q4name === undefined? 'not found': q4name} = ${q4 === undefined? 'not found': q4}`, `price = ${price}`]
   
-  //todo div
-  const tododiv = document.createElement('div')
-  tododiv.classList.add('todo')
+  //stock div
+  const stockDiv = document.createElement('div')
+  stockDiv.classList.add('stock')
   
-  const newtodo = document.createElement('tr')
+  const newStock = document.createElement('tr')
   
-  newtodo.classList.add('todoitem')
+  newStock.classList.add('stockitem')
  
   let infoarr=[]
  
@@ -125,14 +131,14 @@ let addtodo = ()=>{
      info = document.createElement('td')
     info.innerText=array[i]
     info.classList.add('td')
-    newtodo.appendChild(info)
+    newStock.appendChild(info)
     infoarr.push(info.innerHTML)
   }
 
-  tododiv.appendChild(newtodo)
+  stockDiv.appendChild(newStock)
   //save to local 
-  savetodo(infoarr)
-  console.log(infoarr)
+  saveStock(infoarr)
+  
   
 
   
@@ -141,52 +147,52 @@ let addtodo = ()=>{
   const trashbutton= document.createElement('button')
   trashbutton.innerHTML = '<i class="fa-sharp fa-solid fa-trash"></i>'
   trashbutton.classList.add('delet');
-  tododiv.appendChild(trashbutton)
+  stockDiv.appendChild(trashbutton)
   
-  todos.appendChild(tododiv)
+  stocks.appendChild(stockDiv)
   //clear input value
   input.value=""
  }
 
-  let savetodo =(todo)=>{
+  let saveStock =(stock)=>{
     //check if you have saved data
-    let todoss;
+    let stockData;
     
-    if (localStorage.getItem('todoss')=== null)  {
-      todoss=[];
+    if (localStorage.getItem('stockData')=== null)  {
+      stockData=[];
       
     }else{
-      todoss = JSON.parse(localStorage.getItem('todoss'));
+      stockData = JSON.parse(localStorage.getItem('stockData'));
 
     }
-    todoss.push(todo)
-    console.log(todo[2])
-    localStorage.setItem('todoss',JSON.stringify(todoss))
+    stockData.push(stock)
+    
+    localStorage.setItem('stockData',JSON.stringify(stockData))
   }
 
 
 
-  let gettodo =(todo)=>{
+  let getStock =()=>{
     //check if you have saved data
-    let todoss;
-    if (localStorage.getItem('todoss')=== null)  {
-      todoss=[];
+    let stockData;
+    if (localStorage.getItem('stockData')=== null)  {
+      stockData=[];
       
     }else{
-      todoss = JSON.parse(localStorage.getItem('todoss'));
+      stockData = JSON.parse(localStorage.getItem('stockData'));
 
     }
    
 
-    todoss.forEach(todo => {
-      const tododiv = document.createElement('div')
-      tododiv.classList.add('todo')
+    stockData.forEach(stock => {
+      const stockdiv = document.createElement('div')
+      stockdiv.classList.add('stock')
 
-      for (let i = 0; i < todo.length; i++) {
+      for (let i = 0; i < stock.length; i++) {
         info = document.createElement('td')
-       info.innerText=todo[i]
+       info.innerText=stock[i]
        info.classList.add('td')
-       tododiv.appendChild(info) 
+       stockdiv.appendChild(info) 
      }
       //save to local 
       
@@ -196,30 +202,30 @@ let addtodo = ()=>{
       const trashbutton= document.createElement('button')
       trashbutton.innerHTML = '<i class="fa-sharp fa-solid fa-trash"></i>'
       trashbutton.classList.add('delet');
-      tododiv.appendChild(trashbutton)
+      stockdiv.appendChild(trashbutton)
 
-      todos.appendChild(tododiv)
+      stocks.appendChild(stockdiv)
     })
   }
 
-  let removestorgar= (todo)=>{
-    let todoss;
-    if (localStorage.getItem('todoss')=== null)  {
-      todoss=[];
+  let removestorgar= (stock)=>{
+    let stockData;
+    if (localStorage.getItem('stockData')=== null)  {
+      stockData=[];
       
     }else{
-      todoss = JSON.parse(localStorage.getItem('todoss'));
+      stockData = JSON.parse(localStorage.getItem('stockData'));
 
     }
-    const todoindex= todo.children[0].innerText
-    todoss.splice(todoss.indexOf(todoindex), 1)
-    localStorage.setItem('todoss',JSON.stringify(todoss))
+    const stockIndex= stock.children[0].innerText
+    stockData.splice(stockData.indexOf(stockIndex), 1)
+    localStorage.setItem('stockData',JSON.stringify(stockData))
    
   }
 
   document.addEventListener('keydown',(e)=>{
     if(e.key=='Enter'){
-      addtodo()
+      addStock()
     }
   })
   
@@ -228,19 +234,19 @@ let addtodo = ()=>{
   let deletecheck =(e)=>{
     const item = e.target 
     if (item.classList[0]=== 'delet' ) {
-      const todo = item.parentElement;
-      todo.classList.toggle('fall')
-      removestorgar(todo)
-      todo.addEventListener('transitionend',()=>{
-        todo.remove()
+      const stock = item.parentElement;
+      stock.classList.toggle('fall')
+      removestorgar(stock)
+      stock.addEventListener('transitionend',()=>{
+        stock.remove()
       })
       
     }
     }
 
-addbtn.addEventListener('click',addtodo)
-todos.addEventListener('click',deletecheck)
-document.addEventListener('DOMContentLoaded',gettodo);
+addbtn.addEventListener('click',addStock)
+stocks.addEventListener('click',deletecheck)
+document.addEventListener('DOMContentLoaded',getStock);
 
 
 
